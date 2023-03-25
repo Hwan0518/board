@@ -28,13 +28,24 @@ public class BoardController {
         return "";
     }
 
+    /**
+     * 게시글 리스트
+     */
     @GetMapping("/board/list")
-    public String boardList(Model model){
+    public String boardList(Model model) {
         model.addAttribute("list", boardService.boardList());
         return "boardlist";
     }
 
 
+    /**
+     * 상세페이지
+     */
+    @GetMapping("/board/view")
+    public String boardView(Model model, Integer id){
 
+        model.addAttribute("board", boardService.boardView(id));
+        return "boardview";
+    }
 }
 
