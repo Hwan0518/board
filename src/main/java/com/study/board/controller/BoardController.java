@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -53,5 +54,41 @@ public class BoardController {
         boardService.boardDelete(id);
         return "redirect:/board/list";
     }
+
+    /**
+     * @Getmapping 의 {id}부분이 변수로 인식이 되어서
+     * @PathVariable 에서 id로 들어오게 된다
+     */
+    @GetMapping("/board/modify/{id}")
+    public String boardModify(@PathVariable("id") Integer id,
+                              Model model) {
+        model.addAttribute("board", boardService.boardView(id));
+
+        return "boardmodify";
+    }
+
+    /**
+     * 수정하는법
+     * 1. 기존의 내용을 검색해서 가져오고
+     * 2. 새로운 내용을 기존의 내용에 덮어쓴다
+     */
+    @PostMapping("/board/update/{id}")
+    public String boardUpdate(@PathVariable("id")Integer id, Board board) {
+
+        //기존의 내용 조회해서 가져옴 : boardTemp == id에 해당하는 기존의 내용
+        Board boardTemp = boardService.boardView(id);
+
+        //이후 기존의 내용에 새로운 내용을 덮어씌움
+        boardTemp.setTitle(board.getTitle());
+        boardTemp.setContent(board.getContent());
+        boardService.write(boardTemp);
+
+        return "redirect:/board/list";
+    }
+
+
+
+
+
 }
 
