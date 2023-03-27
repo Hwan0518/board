@@ -22,11 +22,15 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(Board board) {
-
+    public String boardWritePro(Board board, Model model) {
+        // 글을 작성
         boardService.write(board);
 
-        return "";
+        // 글작성 완료 메시지 출력
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
     }
 
     /**
@@ -73,7 +77,7 @@ public class BoardController {
      * 2. 새로운 내용을 기존의 내용에 덮어쓴다
      */
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id")Integer id, Board board) {
+    public String boardUpdate(@PathVariable("id")Integer id, Board board, Model model) {
 
         //기존의 내용 조회해서 가져옴 : boardTemp == id에 해당하는 기존의 내용
         Board boardTemp = boardService.boardView(id);
@@ -83,7 +87,11 @@ public class BoardController {
         boardTemp.setContent(board.getContent());
         boardService.write(boardTemp);
 
-        return "redirect:/board/list";
+        // 글 수정 완료 메시지 출력
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
+        model.addAttribute("modifyUrl", String.format("/board/view?id=%s",id));
+
+        return "message";
     }
 
 

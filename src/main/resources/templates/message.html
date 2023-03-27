@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script th:inline="javascript">
+
+  /*<![CDATA*/
+
+  var message = [[${message}]];
+  alert(message);
+
+  // search와 modify중 어떤것이 들어오냐에 따라서 redirect url이 달라짐!
+  if([[${modifyUrl}]]) {
+      location.replace([[${modifyUrl}]]);
+  }else {
+      location.replace([[${searchUrl}]]);
+  }
+  /*]]>*/
+</script>
+
+
+
+<body>
+
+</body>
+</html>
