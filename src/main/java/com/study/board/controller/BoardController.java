@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -22,9 +23,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(Board board, Model model) {
+    public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
         // 글을 작성
-        boardService.write(board);
+        boardService.write(board, file);
 
         // 글작성 완료 메시지 출력
         model.addAttribute("message", "글 작성이 완료되었습니다.");
@@ -77,7 +78,7 @@ public class BoardController {
      * 2. 새로운 내용을 기존의 내용에 덮어쓴다
      */
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id")Integer id, Board board, Model model) {
+    public String boardUpdate(@PathVariable("id")Integer id, Board board, Model model, MultipartFile file) throws Exception {
 
         //기존의 내용 조회해서 가져옴 : boardTemp == id에 해당하는 기존의 내용
         Board boardTemp = boardService.boardView(id);
@@ -85,7 +86,7 @@ public class BoardController {
         //이후 기존의 내용에 새로운 내용을 덮어씌움
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
-        boardService.write(boardTemp);
+        boardService.write(boardTemp, file);
 
         // 글 수정 완료 메시지 출력
         model.addAttribute("message", "글 수정이 완료되었습니다.");
@@ -93,8 +94,6 @@ public class BoardController {
 
         return "message";
     }
-
-
 
 
 
