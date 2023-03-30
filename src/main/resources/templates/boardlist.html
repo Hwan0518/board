@@ -32,6 +32,11 @@
             </tbody>
         </table>
 
+        <th:block th:each="page : ${#numbers.sequence(startPage,endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page -1})}" th:text="${page}"></a>
+            <!-- 현재 페이지는 빨간색으로 표시되며, 눌려지지 않도록 설정-->
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color: red"></strong>
+        </th:block>
     </div>
 
 </body>
