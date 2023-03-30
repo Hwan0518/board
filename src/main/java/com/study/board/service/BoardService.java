@@ -48,6 +48,19 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
+
+
+    /**
+     * 게시글 검색 기능
+     */
+    public Page<Board> boardSearchList(String searchKeyword, Pageable pageable) {
+
+        return boardRepository.findByTitleContaining(searchKeyword, pageable);
+    }
+
+
+
+
     /**
      * 특정 게시글 불러오기 : 입력한 id값에 일치하는 게시글을 불러온다
      */

@@ -42,10 +42,20 @@ public class BoardController {
      * 게시글 리스트
      */
     @GetMapping("/board/list")
-    public String boardList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String boardList(Model model,
+                            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            String searchKeyword) {
 
-        //Page 객체
-        Page<Board> list = boardService.boardList(pageable);
+        // 화면에 보여질 list
+        Page<Board> list = null;
+
+        //검색 기능 : 검색단어가 입력됐다면 검색, 아니라면 page를 반환
+        if (searchKeyword == null){
+            list = boardService.boardList(pageable);
+        } else{
+            list = boardService.boardSearchList(searchKeyword, pageable);
+        }
+
 
         //현재,시작,끝 페이지
         int nowPage = list.getPageable().getPageNumber() +1; //페이지는 0부터 시작되기 때문에 +1처리
